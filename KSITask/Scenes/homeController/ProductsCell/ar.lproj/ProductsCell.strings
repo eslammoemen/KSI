@@ -1,0 +1,21 @@
+
+/* Class = "UILabel"; text = "Offer"; ObjectID = "76s-C9-Oae"; */
+"76s-C9-Oae.text" = "عرض";
+
+/* Class = "UILabel"; text = "DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription"; ObjectID = "TKa-vM-0ia"; */
+"TKa-vM-0ia.text" = "DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription";
+
+/* Class = "UILabel"; text = "Category"; ObjectID = "Upo-3a-6m1"; */
+"Upo-3a-6m1.text" = "Category";
+
+/* Class = "UILabel"; text = "123.0"; ObjectID = "VRi-WR-6Ab"; */
+"VRi-WR-6Ab.text" = "123.0";
+
+/* Class = "UILabel"; text = "19.6%"; ObjectID = "ahN-Ue-MPc"; */
+"ahN-Ue-MPc.text" = "19.6%";
+
+/* Class = "UILabel"; text = "123.0"; ObjectID = "rZQ-ML-GWY"; */
+"rZQ-ML-GWY.text" = "123.0";
+
+/* Class = "UIButton"; normalTitle = "Add To Cart"; ObjectID = "sCV-Ul-xBt"; */
+"sCV-Ul-xBt.normalTitle" = "اضف الي السلة";
