@@ -114,19 +114,19 @@ enum productTypes: Codable {
     case other
     
     init(from decoder: Decoder) throws {
-             let data = try decoder.singleValueContainer().decode(String.self)
-             switch data {
-             case "categoryCover":self = .categoryCover
-                case "productsCover": self = .productsCover
-                case "categoryProductsSlider": self = .categoryProductsSlider
-             case "brandsSlider": self = .brandsSlider
-             case "main": self = .main
-
-             default: self = .other
-             }
+        let data = try decoder.singleValueContainer().decode(String.self)
+        switch data {
+        case "categoryCover":self = .categoryCover
+        case "productsCover": self = .productsCover
+        case "categoryProductsSlider": self = .categoryProductsSlider
+        case "brandsSlider": self = .brandsSlider
+        case "main": self = .main
+            
+        default: self = .other
+        }
     }
-
-   
+    
+    
 }
 
 

@@ -27,6 +27,7 @@ class ProductsCell: UICollectionViewCell {
     @IBOutlet weak var brandTitle: UILabel!
     @IBOutlet weak var imageLeading: NSLayoutConstraint!
     
+    @IBOutlet weak var categoryCoverImage: UIImageView!
     
     @IBOutlet weak var badgeView: UIView!
     override func awakeFromNib() {
@@ -52,17 +53,18 @@ class ProductsCell: UICollectionViewCell {
     var brandConfigs:Brand? {
         didSet{
             mainBrandImage.setImage(from: brandConfigs?.image)
+            brandTitle.text = nil
+            categoryCoverImage.alpha = 0
 
         }
     }
     var categoryCover:Block?{
         didSet {
-            mainBrandImage.setImage(from: categoryCover?.image)
-            mainBrandImage.layer.cornerRadius = mainBrandImage.frame.height/2
-            brandsView.backgroundColor = UIColor.clear.withAlphaComponent(0)
-            brandsView.layer.borderWidth = 0
-            imageLeading.constant = 5
-            brandTitle.text = ""
+            categoryCoverImage.setImage(from:categoryCover?.image)
+            categoryCoverImage.layer.cornerRadius = 40
+            brandTitle.text = nil
+            
+            
             
         }
     }
@@ -76,7 +78,7 @@ class ProductsCell: UICollectionViewCell {
             categoryLabel.text = productsConfigs?.brand
             oldPrice.text = (productVarient?.price?.description ?? "0") + (productVarient?.currency ?? "")
             NewPrice.text = (productVarient?.salePrice?.description ?? "0") + (productVarient?.currency ?? "")
-            discountValue.text = (productVarient?.saleAmount?.description ?? "") + "%"
+            discountValue.text = (productVarient?.saleAmount?.description ?? "") + "% خصم"
             badge.text = productVarient?.badge
             if let badgeChecker = productVarient?.badge{
                 if badgeChecker != "" {

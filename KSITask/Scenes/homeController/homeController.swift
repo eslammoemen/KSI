@@ -72,9 +72,9 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let type =  model.items.value?[safe:indexPath.row]?.type
         if type == .main {
-            return 220
+            return 240
         }else if type == .brandsSlider {
-            return 220
+            return 240
         }else if type == .categoryCover {
             return 210
         }else{
@@ -96,18 +96,18 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
                 let cellSize = CGSize(width:150, height: 150)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
             } else if type == .categoryCover {
-                let cellSize = CGSize(width:125, height: 125)
+                let cellSize = CGSize(width:85, height: 85)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
             }else {
                 let cellSize = CGSize(width:135, height: 270)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
             }
            
-            
+            cell.productsCollectionView.reloadData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 cell.productsCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [], animated: true)
             }
-            cell.productsCollectionView.reloadData()
+            
         }
         
     }
@@ -134,16 +134,23 @@ extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,U
         if type?.blocks != nil {
             if model.items.value?[safe:collectionView.tag]?.type == .categoryCover {
                 cell.categoryCover = type?.blocks?[indexPath.item]
-            }else{
+                cell.brandsView.alpha = 0
+                cell.categoryCoverImage.alpha = 1
+            }else {
                 cell.blockConfigs = type?.blocks?[indexPath.item]
+                cell.brandsView.alpha = 1
+                cell.categoryCoverImage.alpha = 0
             }
+            
             cell.backView.alpha = 0
             
         }else if type?.brands != nil {
             cell.backView.alpha = 0
+            cell.brandsView.alpha = 1
             cell.brandConfigs = type?.brands?[indexPath.item]
         }else{
             cell.backView.alpha = 1
+            cell.brandsView.alpha = 0
             cell.productsConfigs = type?.products?[indexPath.item]
 
         }
