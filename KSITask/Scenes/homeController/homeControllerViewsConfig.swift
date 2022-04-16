@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+
+// swift MIXINS
 protocol homeViewsConfig{}
 extension homeViewsConfig where Self: homeController {
     

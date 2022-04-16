@@ -11,14 +11,12 @@ typealias homeControllerTypeAlias = homeViewsConfig
 
 class homeController: UIViewController,homeControllerTypeAlias {
    
-    
-    
     @IBOutlet weak var itemsTableView: UITableView!
-    
     
     let dataFetchable:NetworkManager
     let model = viewModel()
     
+// initializer Dependancy Injection
     public init(dataFetchable:NetworkManager) {
         self.dataFetchable = dataFetchable
         super.init(nibName: homeController.className, bundle: nil)
@@ -30,7 +28,6 @@ class homeController: UIViewController,homeControllerTypeAlias {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         itesmtableConfigurations {}
         getItemsData()
         Bind()
@@ -39,9 +36,10 @@ class homeController: UIViewController,homeControllerTypeAlias {
     }
 
 
-  
-
 }
+
+//MARK: -ApiCalling Stack and Bind Function MVVM
+
 extension homeController {
     func Bind(){
         model.items.bind { [weak self] _  in
@@ -56,6 +54,8 @@ extension homeController {
         }
     }
 }
+
+//MARK: - Home tableview which scrolls vertically
 
 extension homeController :UITableViewDelegate,UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,20 +89,24 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
             cell.productsCollectionView.dataSource = self
             cell.productsCollectionView.tag = indexPath.row
             let type = model.items.value?[safe:indexPath.row]?.type
+            // main type
             if  type == .main {
                 let cellSize = CGSize(width:150, height: 150)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
+                //brands type
             }else if type == .brandsSlider {
                 let cellSize = CGSize(width:150, height: 150)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
+                // cover type
             } else if type == .categoryCover {
                 let cellSize = CGSize(width:85, height: 85)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
-            }else {
+                //products type
+            }else{
                 let cellSize = CGSize(width:135, height: 270)
                 cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
             }
-           
+           // to handle localization
             cell.productsCollectionView.reloadData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 cell.productsCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [], animated: true)
@@ -113,6 +117,9 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
     }
     
 }
+
+// MARK: - product collection Stack (Collection Inside tableview)
+
 extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -130,7 +137,7 @@ extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,U
         let cell = collectionView.dequeue(indexPath: indexPath) as ProductsCell
 
         let type = model.items.value?[safe:collectionView.tag]?.content
-    
+    // blcok which is main and category type handler
         if type?.blocks != nil {
             if model.items.value?[safe:collectionView.tag]?.type == .categoryCover {
                 cell.categoryCover = type?.blocks?[indexPath.item]
@@ -143,12 +150,13 @@ extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,U
             }
             
             cell.backView.alpha = 0
-            
+            // brand handler
         }else if type?.brands != nil {
             cell.backView.alpha = 0
             cell.brandsView.alpha = 1
             cell.brandConfigs = type?.brands?[indexPath.item]
         }else{
+            // products type
             cell.backView.alpha = 1
             cell.brandsView.alpha = 0
             cell.productsConfigs = type?.products?[indexPath.item]
