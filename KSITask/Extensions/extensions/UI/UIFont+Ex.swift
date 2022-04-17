@@ -24,10 +24,6 @@ extension UIFont{
         
         return UIFont(name:"DINNextLTArabic-Bold", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
     }
-    open class func Cairo(ofSize fontSize: CGFloat) -> UIFont{
-        
-        return UIFont(name:"Cairo-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
-    }
     
     
 }

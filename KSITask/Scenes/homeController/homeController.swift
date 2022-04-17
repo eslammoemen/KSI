@@ -31,6 +31,7 @@ class homeController: UIViewController,homeControllerTypeAlias {
         itesmtableConfigurations {}
         getItemsData()
         Bind()
+        
 
       
     }
@@ -71,9 +72,7 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let type =  model.items.value?[safe:indexPath.row]?.type
-        if type == .main {
-            return 240
-        }else if type == .brandsSlider {
+        if type == .main || type == .brandsSlider {
             return 240
         }else if type == .categoryCover {
             return 210
@@ -90,27 +89,20 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
             cell.productsCollectionView.tag = indexPath.row
             let type = model.items.value?[safe:indexPath.row]?.type
             // main type
-            if  type == .main {
-                let cellSize = CGSize(width:150, height: 150)
-                cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
+            var collectionSize = CGSize()
+            if  type == .main || type == .brandsSlider {
+                collectionSize = CGSize(width:150, height: 150)
                 //brands type
-            }else if type == .brandsSlider {
-                let cellSize = CGSize(width:150, height: 150)
-                cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
-                // cover type
-            } else if type == .categoryCover {
-                let cellSize = CGSize(width:85, height: 85)
-                cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
+            }else if type == .categoryCover {
+                collectionSize = CGSize(width:85, height: 85)
                 //products type
             }else{
-                let cellSize = CGSize(width:135, height: 270)
-                cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: cellSize, Scroll: .horizontal)
+                collectionSize = CGSize(width:135, height: 270)
             }
            // to handle localization
+            cell.productsCollectionView.registerCell(cellClass:ProductsCell.self, withSize: collectionSize, Scroll: .horizontal)
+
             cell.productsCollectionView.reloadData()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                cell.productsCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [], animated: true)
-            }
             
         }
         
@@ -119,7 +111,13 @@ extension homeController :UITableViewDelegate,UITableViewDataSource  {
 }
 
 // MARK: - product collection Stack (Collection Inside tableview)
+extension UICollectionViewFlowLayout {
 
+    open override var flipsHorizontallyInOppositeLayoutDirection: Bool {
+        return true
+    }
+
+}
 extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -135,7 +133,6 @@ extension homeController : UICollectionViewDelegate,UICollectionViewDataSource,U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(indexPath: indexPath) as ProductsCell
-
         let type = model.items.value?[safe:collectionView.tag]?.content
     // blcok which is main and category type handler
         if type?.blocks != nil {
